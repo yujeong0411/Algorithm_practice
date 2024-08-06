@@ -1,32 +1,29 @@
-# 스위치 바꾸는 함수
-def change(idx):
-    if switch[idx] == 1:
-        switch[idx] = 0
-    else:
-        switch[idx] = 1
-    return
-
 N = int(input())
 switch = [-1] + list(map(int, input().split()))
-student = int(input())
-
-for _ in range(student):
-    s, num = map(int, input().split())
-    if s == 1:   # 남자
-        for i in range(num, N+1, num):  # 스위치 배수 간격
-            change(i)
-    else:   # 여자
-        change(num)    # 받은 번호 스위치 반전
-        for i in range(N//2):  # 검사할 갯수(양쪽)
-            if num+i > N or num-i < 1:   # 유효한 스위치 인덱스는 1~N
-                break
-            if switch[num+i] == switch[num-i]:   # 대칭이 같으면
-                change(num+i)
-                change(num-i)
-            else:
-                break
-
-for i in range(1, N+1):
-    print(switch[i], end=' ')
-    if i % 20 == 0:   # 21개부터 줄바꿈
+M = int(input())
+for _ in range(M):
+    student, num = map(int, input().split())
+    if student == 1 :
+        for i in range(1, N//num+1):
+            if switch[i*num] == 0 :
+                switch[i*num] = 1
+            else     :
+                switch[i*num] = 0
+    if student == 2 :
+        if switch[num] == 0:
+            switch[num] = 1
+        else :
+            switch[num] = 0
+        left, right = num-1, num+1
+        while left > 0 and right <= N and switch[left] == switch[right]:
+            if switch[left] == 0:
+                switch[left], switch[right] = 1,1
+            else :
+                switch[left], switch[right] = 0,0
+            left = left - 1
+            right = right + 1
+# 출력 조건에 맞춰주자
+for k in range(1,N+1):
+    print(switch[k], end=" ")
+    if k % 20 == 0:
         print()
