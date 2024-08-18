@@ -1,5 +1,5 @@
 N = int(input())
-arr = [[0]*101 for _ in range(101)]
+arr = [[0]*1001 for _ in range(1001)]
 num = 0
 for _ in range(N):
     x, y, w, h = map(int, input().split())
@@ -8,11 +8,9 @@ for _ in range(N):
         for j in range(x, x+w):
             arr[i][j] = num
 
-result = [0] * N
-for i in range(101):
-    for j in range(101):
-        for k in range(1, N+1):
-            if arr[i][j] == k:
-                result[k-1] += 1
 
-print(*result)
+for n in range(1, N+1):
+    cnt = 0
+    for lst in arr:
+        cnt += lst.count(n)
+    print(cnt)
