@@ -1,8 +1,8 @@
 def backtracking(idx):
     global result
-    cnt = 0
     # 종료 조건
     if idx == N:   # 마지막 계란이면 종료
+        cnt = 0
         for lst in eggs:
             for n in lst:
                 if n <= 0:
