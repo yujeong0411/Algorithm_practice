@@ -1,61 +1,56 @@
-def merge_sort(A, p, r):
-    if p < r:
-        q = (p + r) // 2
-        merge_sort(A, p, q)      # 전반부 정렬
-        merge_sort(A, q + 1, r)  # 후반부 정렬
-        merge(A, p, q, r)        # 병합
+def merge_sort(m):
+    # 리스트의 길이가 1이면 이미 정렬된 상태이므로 그대로 반환
+    if len(m) == 1:
+        return m
+
+    # 리스트를 절반으로 나누기 위해 중간 인덱스를 계산
+    mid = (len(m)+1) // 2
+    left = m[:mid]  # 리스트의 앞쪽 절반
+    right = m[mid:]  # 리스트의 뒤쪽 절반
+
+    # 재귀적으로 왼쪽 부분과 오른쪽 부분을 정렬
+    left = merge_sort(left)
+    right = merge_sort(right)
+
+    # 두 개의 정렬된 리스트를 병합하여 반환
+    return merge(left, right)
 
 
-def merge(A, p, q, r):
-    global count, result_k
-    i = p
-    j = q + 1
-    t = 0
-    tmp = [0] * (r - p + 1)  # 임시 배열 생성
+def merge(left, right):
+    # 두 리스트를 병합할 결과 리스트를 초기화
+    result = [0] * (len(left) + len(right))
+    l = r = 0  # 왼쪽 리스트와 오른쪽 리스트의 인덱스
 
-    while i <= q and j <= r:
-        if A[i] <= A[j]:
-            tmp[t] = A[i]
-            i += 1
+    # 두 리스트를 순차적으로 비교하여 작은 값을 결과 리스트에 추가
+    while l < len(left) and r < len(right):
+        if left[l] < right[r]:
+            not_sorted.append(left[l])
+            result[l + r] = left[l]
+            l += 1
         else:
-            tmp[t] = A[j]
-            j += 1
-        t += 1
-        count += 1
-        if count == K:
-            result_k = tmp[t-1]
+            not_sorted.append(right[r])
+            result[l + r] = right[r]
+            r += 1
 
-    while i <= q:
-        tmp[t] = A[i]
-        i += 1
-        t += 1
-        count += 1
-        if count == K:
-            result_k = tmp[t-1]
+    # 왼쪽 리스트에 남은 요소들을 결과 리스트에 추가
+    while l < len(left):
+        not_sorted.append(left[l])
+        result[l + r] = left[l]
+        l += 1
 
-    while j <= r:
-        tmp[t] = A[j]
-        j += 1
-        t += 1
-        count += 1
-        if count == K:
-            result_k = tmp[t-1]
+    # 오른쪽 리스트에 남은 요소들을 결과 리스트에 추가
+    while r < len(right):
+        not_sorted.append(right[r])
+        result[l + r] = right[r]
+        r += 1
 
-    # 결과를 원본 배열 A에 복사
-    for i in range(t):
-        A[p + i] = tmp[i]
+    # 병합된 결과 리스트를 반환
+    return result
 
-
-# 입력 처리
+not_sorted = []
 N, K = map(int, input().split())
-A = list(map(int, input().split()))
-
-# 전역 변수 초기화
-count = 0
-result_k = -1
-
-# 병합 정렬 수행
-merge_sort(A, 0, N - 1)
-
-# 결과 출력
-print(result_k if result_k != -1 else -1)
+merge_sort(list(map(int, input().split())))
+if K <= len(not_sorted):
+    print(not_sorted[K-1])
+else:
+    print(-1)
