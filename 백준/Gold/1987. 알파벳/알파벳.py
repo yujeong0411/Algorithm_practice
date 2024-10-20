@@ -2,7 +2,6 @@ def move(si, sj, cnt):
     global result
     # 최댓값 갱신
     result = max(result, cnt)
-    visited[ord(board[si][sj])-65] = 1
 
     # 4방향 탐색 (상, 우, 하, 좌)
     for k in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
@@ -17,6 +16,7 @@ def move(si, sj, cnt):
 R, C = map(int, input().split())
 board = [list(input().strip()) for _ in range(R)]
 result = 1  # 최솟값 1 초기화
-visited = [0] * 26  # 알파벳 체크
+visited = [0] * 26  # 알파벳 체크 (26개 알파벳)
+visited[ord(board[0][0])-65] = 1  # 알파펫 체크
 move(0, 0, 1)
 print(result)
